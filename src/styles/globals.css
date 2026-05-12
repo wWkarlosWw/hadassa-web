@@ -1,9 +1,47 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,600&display=swap");
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  /* Brand Colors */
+  --primary: #d6746a;
+  --primary-light: #ebc2be;
+  --primary-dark: #a54d44;
+
+  /* UI Colors */
+  --bg-white: #ffffff;
+  --bg-cream: #fdf8f7;
+  --text-main: #4a3e3e;
+  --text-light: #8e7f7f;
+
+  /* Status Colors */
+  --success: #88a47c;
+  --error: #c84c4c;
+
+  /* Spacing & Borders */
+  --radius: 8px;
+  --radius-lg: 20px;
+  --border-color: rgba(214, 116, 106, 0.2);
+
+  /* Transitions */
+  --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  --transition-fast: all 0.2s ease;
+  --transition-slow: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  /* Shadows */
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 15px 30px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 20px 40px rgba(214, 116, 106, 0.15);
+  --shadow-primary: 0 10px 20px rgba(214, 116, 106, 0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
