@@ -1,40 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,600&display=swap");
 
 :root {
-  /* Brand Colors */
   --primary: #d6746a;
   --primary-light: #ebc2be;
   --primary-dark: #a54d44;
-
-  /* UI Colors */
   --bg-white: #ffffff;
   --bg-cream: #fdf8f7;
   --text-main: #4a3e3e;
   --text-light: #8e7f7f;
-
-  /* Status Colors */
   --success: #88a47c;
   --error: #c84c4c;
-
-  /* Spacing & Borders */
   --radius: 8px;
   --radius-lg: 20px;
   --border-color: rgba(214, 116, 106, 0.2);
-
-  /* Transitions */
   --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   --transition-fast: all 0.2s ease;
-  --transition-slow: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-
-  /* Shadows */
   --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 15px 30px rgba(0, 0, 0, 0.05);
   --shadow-lg: 0 20px 40px rgba(214, 116, 106, 0.15);
   --shadow-primary: 0 10px 20px rgba(214, 116, 106, 0.3);
 }
 
-* {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -45,7 +35,42 @@ html {
 }
 
 body {
-  margin: 0;
-  min-width: 320px;
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--bg-cream);
+  color: var(--text-main);
   min-height: 100vh;
+  width: 100%;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}
+
+input, textarea, select {
+  font-family: inherit;
+}
+
+::selection {
+  background-color: var(--primary-light);
+  color: var(--text-main);
 }
