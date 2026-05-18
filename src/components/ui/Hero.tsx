@@ -1,54 +1,70 @@
 // src/components/ui/Hero.tsx
-import { ArrowRight, HeartHandshake } from "lucide-react";
-import { Button } from "../common/Button";
+import { ArrowRight, Heart } from "lucide-react";
 
 export const Hero = () => {
   return (
-    <main
-      id="inicio"
-      className="relative pt-32 pb-24 flex flex-col items-center text-center px-4 overflow-hidden"
-    >
-      <div className="absolute inset-0 -z-20 bg-[var(--bg-cream)]">
-        <img 
-          src="https://images.unsplash.com/photo-1593113598332-cd288d649433?w=1920&h=1080&fit=crop" 
-          alt="Fondo" 
-          className="w-full h-full object-cover opacity-10"
-        />
-        <div className="absolute top-20 right-0 w-96 h-96 bg-[var(--primary-light)] rounded-full mix-blend-multiply filter blur-3xl opacity-40"></div>
-        <div className="absolute top-40 left-0 w-72 h-72 bg-[var(--success)] rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
-        <div className="absolute bottom-20 left-1/3 w-64 h-64 bg-[var(--primary)]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-40"></div>
-      </div>
-
-      <div className="max-w-4xl mx-auto flex flex-col items-center relative z-10">
-        <h1 className="text-[var(--primary-dark)] font-serif text-5xl md:text-7xl font-bold mb-6 leading-tight drop-shadow-sm">
-          Restaurando Vidas,
-          <br /> Construyendo Futuro
-        </h1>
-
-        <p className="text-[var(--text-light)] text-lg md:text-xl max-w-3xl mb-12 leading-relaxed">
-          Promovemos acciones de alcance social y formación espiritual
-          orientadas a sanar y transformar a mujeres y niños vulnerables,
-          generando un impacto positivo y sostenible en la sociedad desde el
-          2017.
-        </p>
-
-        <div className="flex flex-col gap-4 w-full max-w-sm">
-          <Button variant="primary" fullWidth>
-            <HeartHandshake size={20} />
-            <span>Apoyar la Causa</span>
-          </Button>
-          <Button variant="outline" fullWidth>
-            <span>Nuestra Historia</span>
-            <ArrowRight size={20} />
-          </Button>
+    <section id="inicio" className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-[var(--bg-cream)] via-[var(--primary-light)]/20 to-[var(--bg-cream)]"></div>
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="space-y-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-[var(--shadow-sm)]">
+              <Heart className="w-4 h-4 text-[var(--primary)] fill-[var(--primary)]" />
+              <span className="text-sm text-[var(--text-main)]">9 años transformando vidas</span>
+            </div>
+            <h1 className="text-5xl lg:text-6xl font-bold text-[var(--text-main)] leading-tight">
+              Sembrando esperanza,<span className="text-[var(--primary)]"> cosechando futuro</span>
+            </h1>
+            <p className="text-lg text-[var(--text-light)] leading-relaxed">
+              Promovemos acciones de alcance social y formación espiritual orientadas a sanar, restaurar y transformar vidas de mujeres y niños en situación vulnerable.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <button className="px-8 py-4 bg-[var(--primary)] text-white rounded-[var(--radius)] hover:bg-[var(--primary-dark)] transition-all shadow-[var(--shadow-primary)] hover:shadow-[var(--shadow-lg)] flex items-center gap-2 group">
+                Únete a la causa
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+              <button className="px-8 py-4 bg-white text-[var(--text-main)] rounded-[var(--radius)] hover:bg-gray-50 transition-all shadow-[var(--shadow-sm)]">
+                Conoce más
+              </button>
+            </div>
+            <div className="flex gap-12 pt-8 border-t border-[var(--border-color)]">
+              <div>
+                <div className="text-3xl font-bold text-[var(--primary)]">9+</div>
+                <div className="text-sm text-[var(--text-light)]">Años de servicio</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-[var(--primary)]">100+</div>
+                <div className="text-sm text-[var(--text-light)]">Niños beneficiados</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-[var(--primary)]">50+</div>
+                <div className="text-sm text-[var(--text-light)]">Familias apoyadas</div>
+              </div>
+            </div>
+          </div>
+          <div className="relative">
+            <div className="relative rounded-[var(--radius-lg)] overflow-hidden shadow-[var(--shadow-lg)]">
+              <img
+                src="https://images.unsplash.com/photo-1531983412531-1f49a365ffed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
+                alt="Madre e hijo"
+                className="w-full h-[600px] object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[var(--primary)]/40 to-transparent"></div>
+            </div>
+            <div className="absolute -bottom-8 -left-8 bg-white p-6 rounded-[var(--radius-lg)] shadow-[var(--shadow-lg)] max-w-xs">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-full bg-[var(--success)]/20 flex items-center justify-center flex-shrink-0">
+                  <Heart className="w-6 h-6 text-[var(--success)]" />
+                </div>
+                <div>
+                  <div className="font-semibold text-[var(--text-main)]">Casa de Fruto</div>
+                  <div className="text-sm text-[var(--text-light)] mt-1">Centro de estimulación infantil para hijos de mujeres en el COF</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-[var(--primary)] rounded-full flex justify-center pt-2">
-          <div className="w-1 h-3 bg-[var(--primary)] rounded-full animate-pulse"></div>
-        </div>
-      </div>
-    </main>
+    </section>
   );
 };

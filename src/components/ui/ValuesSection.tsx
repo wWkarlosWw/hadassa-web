@@ -1,82 +1,123 @@
 // src/components/ui/ValuesSection.tsx
-import { Sparkles } from "lucide-react";
+import {
+  Shield,
+  Sparkles,
+  Scale,
+  Award,
+  Lightbulb,
+  CircleCheckBig,
+  Heart,
+  HandHeart,
+  Users,
+  House,
+} from "lucide-react";
 
 export const ValuesSection = () => {
   const values = [
     {
-      title: "Fidelidad",
-      desc: "Fieles con cada proyecto que recibimos del Señor.",
+      icon: Shield,
+      title: "Fidelidad y Obediencia",
+      desc: "Somos fieles con cada uno de los proyectos que recibimos del Señor.",
+      color: "var(--primary)",
+      bg: "rgba(214, 116, 106, 0.08)",
     },
     {
+      icon: Sparkles,
       title: "Fe y Esperanza",
-      desc: "Toda vida puede ser transformada por la gracia de Dios.",
+      desc: "Fundamos nuestras acciones en la fe en Dios y en la convicción de que toda vida puede ser transformada.",
+      color: "var(--success)",
+      bg: "rgba(136, 164, 124, 0.08)",
     },
     {
+      icon: Scale,
       title: "Justicia",
-      desc: "Practicamos la justicia de Dios para dar fruto abundante.",
+      desc: "Promovemos y practicamos la justicia de Dios en cada una de nuestras acciones.",
+      color: "var(--primary-dark)",
+      bg: "rgba(165, 77, 68, 0.08)",
     },
     {
+      icon: Award,
       title: "Excelencia",
-      desc: "Calidad, profesionalismo y dedicación en cada labor.",
+      desc: "Desarrollamos programas y acciones con calidad, profesionalismo y dedicación.",
+      color: "var(--primary)",
+      bg: "rgba(214, 116, 106, 0.08)",
     },
     {
+      icon: Lightbulb,
       title: "Innovación",
-      desc: "Ideas creativas sin comprometer nuestros valores.",
+      desc: "Buscamos ideas creativas que tienen el potencial para cambiar el mundo.",
+      color: "var(--success)",
+      bg: "rgba(136, 164, 124, 0.08)",
     },
     {
-      title: "Integridad",
-      desc: "Gestión de recursos con honestidad y responsabilidad.",
+      icon: CircleCheckBig,
+      title: "Integridad y Verdad",
+      desc: "Gestionamos recursos, proyectos y relaciones con honestidad y responsabilidad.",
+      color: "var(--primary-dark)",
+      bg: "rgba(165, 77, 68, 0.08)",
     },
     {
+      icon: Heart,
       title: "Amor y Compasión",
-      desc: "Empatía, respeto y sensibilidad ante las realidades humanas.",
+      desc: "Servimos a cada persona con el amor de Cristo, mostrando empatía y respeto.",
+      color: "var(--primary)",
+      bg: "rgba(214, 116, 106, 0.08)",
     },
     {
+      icon: HandHeart,
       title: "Servicio",
-      desc: "Actuamos con espíritu de entrega y generosidad.",
+      desc: "Actuamos con espíritu de entrega, cooperación y generosidad.",
+      color: "var(--success)",
+      bg: "rgba(136, 164, 124, 0.08)",
     },
     {
+      icon: Users,
       title: "Unidad",
       desc: "Somos parte de un mismo cuerpo cuya cabeza es Cristo.",
+      color: "var(--primary-dark)",
+      bg: "rgba(165, 77, 68, 0.08)",
     },
     {
-      title: "Hospitalidad",
-      desc: "Acogemos a cada persona con calidez y amor.",
-    },
-    {
-      title: "Confianza",
-      desc: "Construimos relaciones sólidas basadas en transparencia.",
+      icon: House,
+      title: "Hospitalidad y Confianza",
+      desc: "Acogemos a cada persona con calidez y el amor de Cristo.",
+      color: "var(--primary)",
+      bg: "rgba(214, 116, 106, 0.08)",
     },
   ];
 
   return (
-    <section className="py-24 bg-[var(--bg-cream)] px-4 relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-64 h-64 bg-[var(--primary-light)] rounded-full blur-3xl opacity-30"></div>
-      <div className="absolute bottom-0 right-0 w-80 h-80 bg-[var(--success)] rounded-full blur-3xl opacity-20"></div>
-      
-      <div className="max-w-6xl mx-auto relative z-10">
-        <div className="text-center mb-16">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Sparkles className="text-[var(--primary)]" size={24} />
-            <span className="text-[var(--primary)] font-semibold uppercase tracking-wider text-sm">Nuestros valores</span>
+    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="inline-block px-4 py-2 bg-[var(--primary-light)]/30 rounded-full text-[var(--primary)] text-sm font-medium mb-4">
+            Nuestros Valores
           </div>
-          <h2 className="font-serif text-4xl font-bold text-[var(--text-main)] mb-4">
-            Principios que Nos Guían
+          <h2 className="text-4xl font-bold text-[var(--text-main)] mb-6">
+            Principios que nos guían
           </h2>
-          <p className="text-[var(--text-light)] max-w-2xl mx-auto">
-            La base de nuestra visión y misión que define nuestro comportamiento no negociable.
+          <p className="text-lg text-[var(--text-light)]">
+            Nuestros principios y valores fundamentales constituyen la base de
+            nuestra visión y misión, definiendo nuestro comportamiento no
+            negociable.
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
           {values.map((val, idx) => (
             <div
               key={idx}
-              className="group bg-white p-6 rounded-[var(--radius-lg)] shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-lg)] border-b-4 border-transparent hover:border-[var(--primary)] transition-all duration-300 hover:-translate-y-2"
+              className="bg-[var(--bg-cream)] p-6 rounded-[var(--radius-lg)] border border-[var(--border-color)] hover:shadow-[var(--shadow-md)] transition-all hover:-translate-y-1 group"
             >
-              <h4 className="font-serif font-bold text-[var(--text-main)] text-lg mb-3 group-hover:text-[var(--primary)] transition-colors">
+              <div
+                className="w-12 h-12 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"
+                style={{ backgroundColor: val.bg }}
+              >
+                <val.icon className="w-6 h-6" style={{ color: val.color }} />
+              </div>
+              <h3 className="font-semibold text-[var(--text-main)] mb-2 text-sm">
                 {val.title}
-              </h4>
-              <p className="text-[var(--text-light)] text-sm leading-relaxed">
+              </h3>
+              <p className="text-xs text-[var(--text-light)] leading-relaxed">
                 {val.desc}
               </p>
             </div>

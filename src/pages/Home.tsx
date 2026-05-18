@@ -2,10 +2,11 @@ import { Navbar } from "../components/layout/NavBar";
 import { Footer } from "../components/layout/Footer";
 import { Hero } from "../components/ui/Hero";
 import { useScrollReveal } from "../hooks/useScrollReveal";
-import { ImpactSection } from "../components/ui/ImpactSection";
-import { DonationBanner } from "../components/ui/DonationBanner";
 import { AboutSection } from "@/components/ui/AboutSection";
+import { MissionVisionSection } from "@/components/ui/MissionVisionSection";
 import { ValuesSection } from "@/components/ui/ValuesSection";
+import { DonationBanner } from "@/components/ui/DonationBanner";
+import { ProjectsSection } from "@/components/ui/ProjectsSection";
 
 export default function Home() {
   useScrollReveal();
@@ -15,9 +16,10 @@ export default function Home() {
       <Navbar />
       <div className="flex-grow">
         <Hero />
-        <ImpactSection />
         <AboutSection />
+        <MissionVisionSection />
         <ValuesSection />
+        <ProjectsSection />
         <DonationBanner />
       </div>
       <Footer />
