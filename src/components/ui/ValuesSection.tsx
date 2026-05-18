@@ -1,8 +1,10 @@
 // src/components/ui/ValuesSection.tsx
+import { Sparkles } from "lucide-react";
+
 export const ValuesSection = () => {
   const values = [
     {
-      title: "Fidelidad y obediencia",
+      title: "Fidelidad",
       desc: "Fieles con cada proyecto que recibimos del Señor.",
     },
     {
@@ -22,7 +24,7 @@ export const ValuesSection = () => {
       desc: "Ideas creativas sin comprometer nuestros valores.",
     },
     {
-      title: "Integridad y Verdad",
+      title: "Integridad",
       desc: "Gestión de recursos con honestidad y responsabilidad.",
     },
     {
@@ -41,30 +43,40 @@ export const ValuesSection = () => {
       title: "Hospitalidad",
       desc: "Acogemos a cada persona con calidez y amor.",
     },
+    {
+      title: "Confianza",
+      desc: "Construimos relaciones sólidas basadas en transparencia.",
+    },
   ];
 
   return (
-    <section className="py-20 bg-[var(--bg-cream)] px-4 border-t border-[var(--border-color)]">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="font-serif text-3xl font-bold text-[var(--text-main)] mb-4">
-            Nuestros Principios y Valores
+    <section className="py-24 bg-[var(--bg-cream)] px-4 relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-64 h-64 bg-[var(--primary-light)] rounded-full blur-3xl opacity-30"></div>
+      <div className="absolute bottom-0 right-0 w-80 h-80 bg-[var(--success)] rounded-full blur-3xl opacity-20"></div>
+      
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div className="text-center mb-16">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Sparkles className="text-[var(--primary)]" size={24} />
+            <span className="text-[var(--primary)] font-semibold uppercase tracking-wider text-sm">Nuestros valores</span>
+          </div>
+          <h2 className="font-serif text-4xl font-bold text-[var(--text-main)] mb-4">
+            Principios que Nos Guían
           </h2>
-          <p className="text-[var(--text-light)]">
-            La base de nuestra visión y misión que define nuestro comportamiento
-            no negociable.
+          <p className="text-[var(--text-light)] max-w-2xl mx-auto">
+            La base de nuestra visión y misión que define nuestro comportamiento no negociable.
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {values.map((val, idx) => (
             <div
               key={idx}
-              className="bg-white p-6 rounded-[var(--radius)] shadow-[var(--shadow-sm)] border-l-4 border-[var(--primary)]"
+              className="group bg-white p-6 rounded-[var(--radius-lg)] shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-lg)] border-b-4 border-transparent hover:border-[var(--primary)] transition-all duration-300 hover:-translate-y-2"
             >
-              <h4 className="font-bold text-[var(--text-main)] text-sm uppercase mb-2">
+              <h4 className="font-serif font-bold text-[var(--text-main)] text-lg mb-3 group-hover:text-[var(--primary)] transition-colors">
                 {val.title}
               </h4>
-              <p className="text-[var(--text-light)] text-xs leading-relaxed">
+              <p className="text-[var(--text-light)] text-sm leading-relaxed">
                 {val.desc}
               </p>
             </div>

@@ -6,15 +6,21 @@ export const Hero = () => {
   return (
     <main
       id="inicio"
-      className="relative pt-20 pb-32 flex flex-col items-center text-center px-4 overflow-hidden"
+      className="relative pt-32 pb-24 flex flex-col items-center text-center px-4 overflow-hidden"
     >
-      <div className="absolute inset-0 -z-10 bg-[var(--bg-cream)]">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[var(--primary-light)] rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-        <div className="absolute top-0 left-0 w-72 h-72 bg-[var(--success)] rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+      <div className="absolute inset-0 -z-20 bg-[var(--bg-cream)]">
+        <img 
+          src="https://images.unsplash.com/photo-1593113598332-cd288d649433?w=1920&h=1080&fit=crop" 
+          alt="Fondo" 
+          className="w-full h-full object-cover opacity-10"
+        />
+        <div className="absolute top-20 right-0 w-96 h-96 bg-[var(--primary-light)] rounded-full mix-blend-multiply filter blur-3xl opacity-40"></div>
+        <div className="absolute top-40 left-0 w-72 h-72 bg-[var(--success)] rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+        <div className="absolute bottom-20 left-1/3 w-64 h-64 bg-[var(--primary)]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-40"></div>
       </div>
 
-      <div className="max-w-4xl mx-auto flex flex-col items-center">
-        <h1 className="text-blue-600 font-serif text-5xl md:text-7xl font-bold mb-6 leading-tight">
+      <div className="max-w-4xl mx-auto flex flex-col items-center relative z-10">
+        <h1 className="text-[var(--primary-dark)] font-serif text-5xl md:text-7xl font-bold mb-6 leading-tight drop-shadow-sm">
           Restaurando Vidas,
           <br /> Construyendo Futuro
         </h1>
@@ -35,6 +41,12 @@ export const Hero = () => {
             <span>Nuestra Historia</span>
             <ArrowRight size={20} />
           </Button>
+        </div>
+      </div>
+
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+        <div className="w-6 h-10 border-2 border-[var(--primary)] rounded-full flex justify-center pt-2">
+          <div className="w-1 h-3 bg-[var(--primary)] rounded-full animate-pulse"></div>
         </div>
       </div>
     </main>
