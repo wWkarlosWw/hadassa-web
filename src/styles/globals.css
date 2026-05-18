@@ -1,6 +1,8 @@
+/* src/styles/globals.css */
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
+/* Guía de Colores y Variables de Interfaz */
 :root {
   --primary: #d6746a;
   --primary-light: #ebc2be;
@@ -22,55 +24,24 @@
   --shadow-primary: 0 10px 20px rgba(214, 116, 106, 0.3);
 }
 
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
+@theme {
+  --color-primary: var(--primary);
+  --color-primary-light: var(--primary-light);
+  --color-primary-dark: var(--primary-dark);
+  --color-bg-white: var(--bg-white);
+  --color-bg-cream: var(--bg-cream);
+  --color-text-main: var(--text-main);
+  --color-text-light: var(--text-light);
+  --color-success: var(--success);
+  --color-error: var(--error);
+  --font-sans: "Montserrat", sans-serif;
+  --font-serif: "Playfair Display", serif;
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
   background-color: var(--bg-cream);
   color: var(--text-main);
-  min-height: 100vh;
-  width: 100%;
-  line-height: 1.6;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-#root {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Playfair Display', serif;
-  font-weight: 600;
-  line-height: 1.2;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-button {
-  font-family: inherit;
-}
-
-input, textarea, select {
-  font-family: inherit;
-}
-
-::selection {
-  background-color: var(--primary-light);
-  color: var(--text-main);
 }
