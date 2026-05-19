@@ -1,6 +1,7 @@
 // src/components/layout/Navbar.tsx
 import { useState, useEffect } from "react";
 import { Menu, X, User } from "lucide-react";
+import logoHadassa from "../../assets/hadassa/Hadassa_logo.png";
 
 export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -20,18 +21,22 @@ export const Navbar = () => {
   ];
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 ${scrolled ? "bg-[var(--bg-white)] shadow-[var(--shadow-md)] py-3" : "bg-transparent py-5"}`}>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 ${scrolled ? "bg-[var(--bg-white)] shadow-[var(--shadow-md)] py-3" : "bg-transparent py-5"}`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <a href="#inicio" className="flex items-center gap-3 group">
-            <div className="w-12 h-12 rounded-full bg-[var(--primary)] flex items-center justify-center shadow-[var(--shadow-primary)]">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-heart w-6 h-6 text-white fill-white">
-                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
-              </svg>
+            <div className="w-20 h-20 rounded-full flex items-center justify-center ">
+              <img src={logoHadassa} alt="Logo Hadassa" />
             </div>
             <div>
-              <h1 className="text-xl font-semibold text-[var(--text-main)]">Fundación Hadassa</h1>
-              <p className="text-sm text-[var(--text-light)]">Transformando vidas</p>
+              <h1 className="text-xl font-semibold text-[var(--text-main)]">
+                Fundación Hadassa
+              </h1>
+              <p className="text-sm text-[var(--text-light)]">
+                Transformando vidas
+              </p>
             </div>
           </a>
 
