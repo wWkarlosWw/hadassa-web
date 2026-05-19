@@ -1,12 +1,14 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { User } from '@/types'
 import { STORAGE_KEYS } from '@/shared/constants'
+import { authService } from '@/services/auth.service'
 
 interface AuthContextType {
   user: User | null
   isAuthenticated: boolean
   isLoading: boolean
-  login: (token: string, user: User) => void
+  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>
+  register: (name: string, email: string, phone: string, password: string) => Promise<{ success: boolean; error?: string }>
   logout: () => void
 }
 
@@ -31,10 +33,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(false)
   }, [])
 
-  const login = (token: string, userData: User) => {
-    localStorage.setItem(STORAGE_KEYS.TOKEN, token)
-    localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(userData))
-    setUser(userData)
+  const login = async (email: string, password: string) => {
+    try {
+      const response = await authService.login(email, password)
+      localStorage.setItem(STORAGE_KEYS.TOKEN, response.accessToken)
+      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.user))
+      setUser(response.user)
+      return { success: true }
+    } catch (err) {
+      return { success: false, error: err instanceof Error ? err.message : 'Error al iniciar sesión' }
+    }
+  }
+
+  const register = async (name: string, email: string, phone: string, password: string) => {
+    try {
+      const response = await authService.register({ name, email, phone, password })
+      localStorage.setItem(STORAGE_KEYS.TOKEN, response.accessToken)
+      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.user))
+      setUser(response.user)
+      return { success: true }
+    } catch (err) {
+      return { success: false, error: err instanceof Error ? err.message : 'Error al registrarse' }
+    }
   }
 
   const logout = () => {
@@ -44,7 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, isLoading, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   )

@@ -52,7 +52,7 @@ export const Navbar = () => {
 
           <div className="flex items-center gap-4">
             <a
-              href="#login"
+              href="/login"
               className="hidden md:flex items-center gap-2 text-[var(--text-main)] hover:text-[var(--primary)] transition-colors duration-300"
             >
               <User size={20} />
@@ -85,7 +85,7 @@ export const Navbar = () => {
             ))}
             <li>
               <a
-                href="#login"
+                href="/login"
                 className="block text-[var(--text-main)] font-medium py-2 hover:text-[var(--primary)] transition-colors"
                 onClick={() => setMobileOpen(false)}
               >
