@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-[var(--bg-cream)]">
       <Navbar />
-      <div className="flex-grow">
+      <div className="grow">
         <Hero />
         <AboutSection />
         <MissionVisionSection />
