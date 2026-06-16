@@ -1,16 +1,52 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { useAuth } from "@/context";
-import { Heart, HandHeart, Tag, Calendar, LogOut } from "lucide-react";
+import { Heart, HandHeart, Tag, Calendar, LogOut, LayoutDashboard, Building2, Megaphone, BadgePercent, Users, ShieldCheck, ClipboardCheck } from "lucide-react";
 import logoHadassa from "../../assets/hadassa/Hadassa_logo.png";
+import type { UserRole } from "@/types";
 
-const navItems = [
+type NavItem = { to: string; icon: React.ComponentType<{ size?: number; className?: string }>; label: string };
+
+const userNav: NavItem[] = [
+  { to: "/dashboard", icon: LayoutDashboard, label: "Mi Panel" },
   { to: "/dashboard/donar", icon: HandHeart, label: "Donar" },
   { to: "/dashboard/descuentos", icon: Tag, label: "Descuentos" },
   { to: "/dashboard/actividades", icon: Calendar, label: "Actividades" },
 ];
 
+const supervisorNav: NavItem[] = [
+  { to: "/dashboard", icon: LayoutDashboard, label: "Mi Panel" },
+  { to: "/dashboard/validar-donaciones", icon: ClipboardCheck, label: "Validar Donaciones" },
+  { to: "/dashboard/validar-asistencia", icon: ShieldCheck, label: "Validar Asistencia" },
+];
+
+const adminNav: NavItem[] = [
+  { to: "/dashboard", icon: LayoutDashboard, label: "Mi Panel" },
+  { to: "/dashboard/organizaciones", icon: Building2, label: "Organizaciones" },
+  { to: "/dashboard/eventos", icon: Megaphone, label: "Eventos" },
+  { to: "/dashboard/descuentos-admin", icon: BadgePercent, label: "Descuentos" },
+  { to: "/dashboard/supervisores", icon: ShieldCheck, label: "Supervisores" },
+  { to: "/dashboard/usuarios", icon: Users, label: "Usuarios" },
+];
+
+const roleNavMap: Record<UserRole, NavItem[]> = {
+  USER: userNav,
+  SUPERVISOR: supervisorNav,
+  ADMIN: adminNav,
+  GUEST: userNav,
+};
+
+const roleTitle: Record<UserRole, string> = {
+  USER: "Panel de Usuario",
+  SUPERVISOR: "Panel de Supervisor",
+  ADMIN: "Panel de Administración",
+  GUEST: "Panel de Usuario",
+};
+
 export function UserLayout() {
   const { user, logout } = useAuth();
+  const role = (user?.role || "USER") as UserRole;
+  const navItems = roleNavMap[role] || userNav;
+  const subtitle = roleTitle[role];
 
   return (
     <div className="min-h-screen bg-[var(--bg-cream)] flex">
@@ -22,7 +58,7 @@ export function UserLayout() {
             </div>
             <div>
               <h2 className="text-sm font-semibold text-[var(--text-main)]">Fundación Hadassa</h2>
-              <p className="text-xs text-[var(--text-light)]">Panel de Usuario</p>
+              <p className="text-xs text-[var(--text-light)]">{subtitle}</p>
             </div>
           </NavLink>
         </div>
@@ -32,6 +68,7 @@ export function UserLayout() {
             <NavLink
               key={to}
               to={to}
+              end={to === "/dashboard"}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-4 py-3 rounded-[var(--radius)] text-sm font-medium transition-colors ${
                   isActive
@@ -53,7 +90,7 @@ export function UserLayout() {
             </div>
             <div className="min-w-0">
               <p className="text-sm font-medium text-[var(--text-main)] truncate">{user?.name}</p>
-              <p className="text-xs text-[var(--text-light)] capitalize">{user?.role}</p>
+              <p className="text-xs text-[var(--text-light)] capitalize">{user?.role?.toLowerCase()}</p>
             </div>
           </div>
           <button

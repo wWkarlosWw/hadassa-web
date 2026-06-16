@@ -7,6 +7,14 @@ import { UserLayout } from "@/components/layout/UserLayout";
 import { DonarPage } from "@/pages/user/DonarPage";
 import { DescuentosPage } from "@/pages/user/DescuentosPage";
 import { ActividadesPage } from "@/pages/user/ActividadesPage";
+import { ValidateDonationsPage } from "@/pages/supervisor/ValidateDonationsPage";
+import { ValidateAttendancePage } from "@/pages/supervisor/ValidateAttendancePage";
+
+import { OrganizationsPage } from "@/pages/admin/OrganizationsPage";
+import { EventsPage } from "@/pages/admin/EventsPage";
+import { DiscountsManagePage } from "@/pages/admin/DiscountsManagePage";
+import { SupervisorsPage } from "@/pages/admin/SupervisorsPage";
+import { UsersPage } from "@/pages/admin/UsersPage";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -39,6 +47,13 @@ export function AppRouter() {
           <Route path="donar" element={<DonarPage />} />
           <Route path="descuentos" element={<DescuentosPage />} />
           <Route path="actividades" element={<ActividadesPage />} />
+          <Route path="validar-donaciones" element={<ValidateDonationsPage />} />
+          <Route path="validar-asistencia" element={<ValidateAttendancePage />} />
+          <Route path="organizaciones" element={<OrganizationsPage />} />
+          <Route path="eventos" element={<EventsPage />} />
+          <Route path="descuentos-admin" element={<DiscountsManagePage />} />
+          <Route path="supervisores" element={<SupervisorsPage />} />
+          <Route path="usuarios" element={<UsersPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
