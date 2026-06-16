@@ -6,6 +6,9 @@ export const ROUTES = {
   REGISTER: "/register",
   DASHBOARD: "/dashboard",
   PROFILE: "/profile",
+  DONAR: "/dashboard/donar",
+  DESCUENTOS: "/dashboard/descuentos",
+  ACTIVIDADES: "/dashboard/actividades",
 } as const;
 
 export const STORAGE_KEYS = {
