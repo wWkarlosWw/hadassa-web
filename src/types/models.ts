@@ -6,6 +6,16 @@ export interface Organization {
   address: string
   isActive: boolean
   createdAt: string
+  goal?: number
+  raised?: number
+  donors?: number
+  beneficiaries?: number
+  image?: string
+  coverImage?: string
+  tagline?: string
+  category?: string
+  location?: string
+  featured?: boolean
 }
 
 export interface Event {

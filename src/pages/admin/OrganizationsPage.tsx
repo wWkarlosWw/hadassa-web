@@ -3,7 +3,31 @@ import { Building2, Plus, Pencil, Trash2, Loader2 } from "lucide-react";
 import { organizationService } from "@/services/organization.service";
 import type { Organization } from "@/types/models";
 
-const INITIAL_FORM = { name: "", email: "", password: "", type: "CHARITY" as 'CHARITY' | 'NGO' | 'COLLABORATOR', address: "" };
+const CATEGORIES = [
+  "",
+  "Infancia y Familia",
+  "Educación",
+  "Salud",
+  "Salud y Nutrición",
+  "Vivienda",
+  "Medio Ambiente",
+];
+
+const INITIAL_FORM = {
+  name: "",
+  email: "",
+  password: "",
+  type: "CHARITY" as "CHARITY" | "NGO" | "COLLABORATOR",
+  address: "",
+  goal: "",
+  image: "",
+  coverImage: "",
+  tagline: "",
+  category: "",
+  location: "",
+  featured: false,
+  beneficiaries: "",
+};
 
 export function OrganizationsPage() {
   const [organizations, setOrganizations] = useState<Organization[]>([]);
@@ -38,10 +62,26 @@ export function OrganizationsPage() {
   };
 
   const openEdit = (org: Organization) => {
-    setForm({ name: org.name, email: org.email, password: "", type: org.type, address: org.address });
+    setForm({
+      name: org.name,
+      email: org.email,
+      password: "",
+      type: org.type,
+      address: org.address,
+      goal: String(org.goal ?? ""),
+      image: org.image || "",
+      coverImage: org.coverImage || "",
+      tagline: org.tagline || "",
+      category: org.category || "",
+      location: org.location || "",
+      featured: org.featured || false,
+      beneficiaries: String(org.beneficiaries ?? ""),
+    });
     setEditing(org);
     setShowForm(true);
   };
+
+  const toNumber = (val: string) => (val ? Number(val) : undefined);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,16 +89,25 @@ export function OrganizationsPage() {
     setError("");
     setSuccess("");
     try {
+      const data = {
+        name: form.name,
+        email: form.email,
+        type: form.type,
+        address: form.address,
+        goal: toNumber(form.goal),
+        image: form.image || undefined,
+        coverImage: form.coverImage || undefined,
+        tagline: form.tagline || undefined,
+        category: form.category || undefined,
+        location: form.location || undefined,
+        featured: form.featured,
+        beneficiaries: toNumber(form.beneficiaries),
+      };
       if (editing) {
-        await organizationService.update(editing.id, {
-          name: form.name,
-          email: form.email,
-          type: form.type,
-          address: form.address,
-        });
+        await organizationService.update(editing.id, data);
         setSuccess("Organización actualizada exitosamente");
       } else {
-        await organizationService.create(form);
+        await organizationService.create({ ...data, password: form.password });
         setSuccess("Organización creada exitosamente");
       }
       resetForm();
@@ -92,10 +141,15 @@ export function OrganizationsPage() {
     return `px-2.5 py-0.5 rounded-full text-xs font-medium ${styles[type] || "bg-gray-100 text-gray-800"}`;
   };
 
+  const update = (key: string, value: any) => setForm({ ...form, [key]: value });
+  const inputCls =
+    "w-full px-3 py-2 border border-[var(--border-color)] rounded-[var(--radius)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)]";
+  const labelCls = "block text-sm font-medium text-[var(--text-main)] mb-1";
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--primary)]"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--primary)]" />
       </div>
     );
   }
@@ -135,39 +189,74 @@ export function OrganizationsPage() {
           <h3 className="text-lg font-semibold text-[var(--text-main)] mb-4">
             {editing ? "Editar Organización" : "Nueva Organización"}
           </h3>
-          <form onSubmit={handleSubmit} className="grid sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-[var(--text-main)] mb-1">Nombre</label>
-              <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full px-3 py-2 border border-[var(--border-color)] rounded-[var(--radius)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)]" required />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-[var(--text-main)] mb-1">Email</label>
-              <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="w-full px-3 py-2 border border-[var(--border-color)] rounded-[var(--radius)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)]" required />
-            </div>
-            {!editing && (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-[var(--text-main)] mb-1">Contraseña</label>
-                <input type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })}
-                  className="w-full px-3 py-2 border border-[var(--border-color)] rounded-[var(--radius)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)]" required />
+                <label className={labelCls}>Nombre</label>
+                <input type="text" value={form.name} onChange={(e) => update("name", e.target.value)} className={inputCls} required />
               </div>
-            )}
-            <div>
-              <label className="block text-sm font-medium text-[var(--text-main)] mb-1">Tipo</label>
-              <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value as any })}
-                className="w-full px-3 py-2 border border-[var(--border-color)] rounded-[var(--radius)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)]">
-                <option value="CHARITY">Charity</option>
-                <option value="NGO">NGO</option>
-                <option value="COLLABORATOR">Collaborator</option>
-              </select>
+              <div>
+                <label className={labelCls}>Email</label>
+                <input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} className={inputCls} required />
+              </div>
+              {!editing && (
+                <div>
+                  <label className={labelCls}>Contraseña</label>
+                  <input type="password" value={form.password} onChange={(e) => update("password", e.target.value)} className={inputCls} required />
+                </div>
+              )}
+              <div>
+                <label className={labelCls}>Tipo</label>
+                <select value={form.type} onChange={(e) => update("type", e.target.value)} className={inputCls}>
+                  <option value="CHARITY">Charity</option>
+                  <option value="NGO">NGO</option>
+                  <option value="COLLABORATOR">Collaborator</option>
+                </select>
+              </div>
+              <div>
+                <label className={labelCls}>Categoría</label>
+                <select value={form.category} onChange={(e) => update("category", e.target.value)} className={inputCls}>
+                  {CATEGORIES.map((c) => (
+                    <option key={c} value={c}>{c || "Sin categoría"}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className={labelCls}>Ubicación</label>
+                <input type="text" value={form.location} onChange={(e) => update("location", e.target.value)} className={inputCls} placeholder="Ej: La Paz, Bolivia" />
+              </div>
+              <div className="sm:col-span-2">
+                <label className={labelCls}>Dirección</label>
+                <input type="text" value={form.address} onChange={(e) => update("address", e.target.value)} className={inputCls} />
+              </div>
+              <div className="sm:col-span-2">
+                <label className={labelCls}>Tagline (descripción corta)</label>
+                <input type="text" value={form.tagline} onChange={(e) => update("tagline", e.target.value)} className={inputCls} placeholder="Ej: Brindando esperanza y apoyo a familias vulnerables" />
+              </div>
+              <div>
+                <label className={labelCls}>Meta de recaudación (Bs.)</label>
+                <input type="number" min="0" step="0.01" value={form.goal} onChange={(e) => update("goal", e.target.value)} className={inputCls} placeholder="0.00" />
+              </div>
+              <div>
+                <label className={labelCls}>Beneficiarios</label>
+                <input type="number" min="0" value={form.beneficiaries} onChange={(e) => update("beneficiaries", e.target.value)} className={inputCls} placeholder="0" />
+              </div>
+              <div className="sm:col-span-2">
+                <label className={labelCls}>Image URL (card)</label>
+                <input type="url" value={form.image} onChange={(e) => update("image", e.target.value)} className={inputCls} placeholder="https://..." />
+              </div>
+              <div className="sm:col-span-2">
+                <label className={labelCls}>Cover Image URL (carrusel)</label>
+                <input type="url" value={form.coverImage} onChange={(e) => update("coverImage", e.target.value)} className={inputCls} placeholder="https://..." />
+              </div>
+              <div className="flex items-end pb-2">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" checked={form.featured} onChange={(e) => update("featured", e.target.checked)} className="w-4 h-4 rounded border-[var(--border-color)] text-[var(--primary)] focus:ring-[var(--primary)]" />
+                  <span className="text-sm font-medium text-[var(--text-main)]">Destacado (carrusel)</span>
+                </label>
+              </div>
             </div>
-            <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-[var(--text-main)] mb-1">Dirección</label>
-              <input type="text" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })}
-                className="w-full px-3 py-2 border border-[var(--border-color)] rounded-[var(--radius)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 focus:border-[var(--primary)]" />
-            </div>
-            <div className="sm:col-span-2 flex gap-3">
+            <div className="flex gap-3 pt-2">
               <button type="submit" disabled={submitting}
                 className="flex items-center gap-2 bg-[var(--primary)] text-white px-6 py-2.5 rounded-[var(--radius)] font-medium text-sm hover:opacity-90 transition-opacity disabled:opacity-50">
                 {submitting && <Loader2 className="w-4 h-4 animate-spin" />}
@@ -190,6 +279,9 @@ export function OrganizationsPage() {
                 <th className="text-left py-3 px-4 text-[var(--text-light)] font-medium">Nombre</th>
                 <th className="text-left py-3 px-4 text-[var(--text-light)] font-medium">Email</th>
                 <th className="text-left py-3 px-4 text-[var(--text-light)] font-medium">Tipo</th>
+                <th className="text-left py-3 px-4 text-[var(--text-light)] font-medium">Categoría</th>
+                <th className="text-left py-3 px-4 text-[var(--text-light)] font-medium">Meta</th>
+                <th className="text-left py-3 px-4 text-[var(--text-light)] font-medium">Destacado</th>
                 <th className="text-left py-3 px-4 text-[var(--text-light)] font-medium">Estado</th>
                 <th className="text-left py-3 px-4 text-[var(--text-light)] font-medium">Acciones</th>
               </tr>
@@ -200,6 +292,15 @@ export function OrganizationsPage() {
                   <td className="py-3 px-4 font-medium text-[var(--text-main)]">{org.name}</td>
                   <td className="py-3 px-4 text-[var(--text-main)]">{org.email}</td>
                   <td className="py-3 px-4"><span className={typeBadge(org.type)}>{org.type}</span></td>
+                  <td className="py-3 px-4 text-[var(--text-light)]">{org.category || "-"}</td>
+                  <td className="py-3 px-4 text-[var(--text-main)]">{org.goal ? `Bs. ${org.goal.toFixed(2)}` : "-"}</td>
+                  <td className="py-3 px-4">
+                    {org.featured ? (
+                      <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Sí</span>
+                    ) : (
+                      <span className="text-[var(--text-light)]">No</span>
+                    )}
+                  </td>
                   <td className="py-3 px-4">
                     <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${org.isActive ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
                       {org.isActive ? "Activo" : "Inactivo"}
@@ -219,7 +320,7 @@ export function OrganizationsPage() {
               ))}
               {organizations.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="py-8 text-center text-[var(--text-light)]">No hay organizaciones registradas</td>
+                  <td colSpan={8} className="py-8 text-center text-[var(--text-light)]">No hay organizaciones registradas</td>
                 </tr>
               )}
             </tbody>

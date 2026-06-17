@@ -50,7 +50,7 @@ export function UserLayout() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-cream)] flex">
-      <aside className="w-64 bg-white border-r border-[var(--border-color)] flex flex-col shrink-0">
+      <aside className="w-64 bg-white border-r border-[var(--border-color)] flex flex-col shrink-0 sticky top-0 h-screen">
         <div className="p-6 border-b border-[var(--border-color)]">
           <NavLink to="/dashboard" className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full flex items-center justify-center">
@@ -63,7 +63,7 @@ export function UserLayout() {
           </NavLink>
         </div>
 
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex-1 overflow-y-auto p-4 space-y-1">
           {navItems.map(({ to, icon: Icon, label }) => (
             <NavLink
               key={to}

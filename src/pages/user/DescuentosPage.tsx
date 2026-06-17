@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { Tag, Gift, Star, Loader2, CheckCircle, XCircle } from "lucide-react";
 import { discountService } from "@/services/discount.service";
 import { claimedDiscountService } from "@/services/claimed-discount.service";
+import { useAuth } from "@/context";
 import type { Discount, ClaimedDiscount } from "@/types/models";
 
 export function DescuentosPage() {
+  const { user, refreshUser } = useAuth();
   const [discounts, setDiscounts] = useState<Discount[]>([]);
   const [myClaims, setMyClaims] = useState<ClaimedDiscount[]>([]);
   const [loading, setLoading] = useState(true);
@@ -30,6 +32,7 @@ export function DescuentosPage() {
     try {
       const claim = await claimedDiscountService.claim(discountId);
       setMyClaims((prev) => [claim, ...prev]);
+      await refreshUser();
       setMessage({ type: "success", text: "¡Descuento canjeado exitosamente!" });
     } catch {
       setMessage({ type: "error", text: "Error al canjear el descuento. Verifica tus puntos." });
@@ -87,7 +90,7 @@ export function DescuentosPage() {
           <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
           <span className="text-lg font-semibold text-[var(--text-main)]">Mis Puntos</span>
         </div>
-        <p className="text-3xl font-bold text-[var(--primary)]">{0}</p>
+        <p className="text-3xl font-bold text-[var(--primary)]">{user?.points ?? 0}</p>
       </div>
 
       <div className="mb-8">
@@ -117,11 +120,17 @@ export function DescuentosPage() {
                 )}
                 <button
                   onClick={() => handleClaim(disc.id)}
-                  disabled={claimingId === disc.id}
+                  disabled={claimingId === disc.id || (user?.points ?? 0) < disc.pointsRequired}
                   className="w-full bg-[var(--primary)] text-white py-2 rounded-[var(--radius)] font-medium text-sm hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
+                  title={(user?.points ?? 0) < disc.pointsRequired ? `Necesitas ${disc.pointsRequired} puntos` : ""}
                 >
-                  {claimingId === disc.id && <Loader2 className="w-4 h-4 animate-spin" />}
-                  Canjear
+                  {claimingId === disc.id ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (user?.points ?? 0) < disc.pointsRequired ? (
+                    `Faltan ${disc.pointsRequired - (user?.points ?? 0)} pts`
+                  ) : (
+                    "Canjear"
+                  )}
                 </button>
               </div>
             ))}
