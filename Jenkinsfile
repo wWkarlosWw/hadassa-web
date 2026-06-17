@@ -46,18 +46,21 @@ pipeline {
         stage('Publicar reportes HTML') {
             steps {
                 publishHTML([
+                    allowMissing: true,
                     reportDir: 'test-results',
                     reportFiles: 'vitest-report.html',
                     reportName: 'Reporte Unit Tests (Vitest)',
                     keepAll: true
                 ])
                 publishHTML([
+                    allowMissing: true,
                     reportDir: 'test-results',
                     reportFiles: 'cucumber-report.html',
                     reportName: 'Reporte BDD (Cucumber)',
                     keepAll: true
                 ])
                 publishHTML([
+                    allowMissing: true,
                     reportDir: 'playwright-report',
                     reportFiles: 'index.html',
                     reportName: 'Reporte E2E (Playwright)',
