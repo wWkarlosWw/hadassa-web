@@ -2,6 +2,15 @@ import { test, expect } from '@playwright/test';
 
 const SCREENSHOT_DIR = 'tests/screenshots';
 
+async function screenshot(page: any, name: string) {
+  const buffer = await page.screenshot({ fullPage: true });
+  await test.info().attachments.push({
+    name,
+    contentType: 'image/png',
+    body: buffer,
+  });
+}
+
 async function submitForm(page: any) {
   await page.evaluate(() => {
     const form = document.querySelector('form');
@@ -36,7 +45,7 @@ test.describe('Login Page - Pruebas E2E', () => {
     await page.goto('/login');
     await expect(page.getByText('Bienvenido de nuevo')).toBeVisible();
     await expect(page.getByText('Inicia sesión para continuar ayudando')).toBeVisible();
-    await page.screenshot({ path: `${SCREENSHOT_DIR}/01-formulario-vacio.png`, fullPage: true });
+    await screenshot(page, 'Formulario vacío');
   });
 
   test('02 - Muestra errores de validación al enviar vacío', async ({ page }) => {
@@ -44,7 +53,7 @@ test.describe('Login Page - Pruebas E2E', () => {
     await submitForm(page);
     await expect(page.getByText('El correo electrónico es requerido')).toBeVisible();
     await expect(page.getByText('La contraseña es requerida')).toBeVisible();
-    await page.screenshot({ path: `${SCREENSHOT_DIR}/02-errores-validacion.png`, fullPage: true });
+    await screenshot(page, 'Errores de validación vacío');
   });
 
   test('03 - Muestra error de email inválido', async ({ page }) => {
@@ -54,17 +63,17 @@ test.describe('Login Page - Pruebas E2E', () => {
     await submitForm(page);
     await expect(page.getByText('El correo electrónico no es válido')).toBeVisible({ timeout: 10000 });
     await expect(page.getByText('La contraseña debe tener al menos 6 caracteres')).toBeVisible();
-    await page.screenshot({ path: `${SCREENSHOT_DIR}/03-email-invalido.png`, fullPage: true });
+    await screenshot(page, 'Error email inválido');
   });
 
   test('04 - Login exitoso redirige al dashboard', async ({ page }) => {
     await page.goto('/login');
     await page.locator('#email').fill('admin@hadassa.com');
     await page.locator('#password').fill('password123');
-    await page.screenshot({ path: `${SCREENSHOT_DIR}/04-formulario-relleno.png`, fullPage: true });
+    await screenshot(page, 'Formulario relleno login exitoso');
     await submitForm(page);
     await expect(page).toHaveURL('/dashboard');
-    await page.screenshot({ path: `${SCREENSHOT_DIR}/05-dashboard.png`, fullPage: true });
+    await screenshot(page, 'Dashboard después del login');
   });
 
   test('05 - Muestra error del servidor en login fallido', async ({ page }) => {
@@ -81,6 +90,6 @@ test.describe('Login Page - Pruebas E2E', () => {
     await page.locator('#password').fill('wrongpassword');
     await submitForm(page);
     await expect(page.getByText('Credenciales inválidas')).toBeVisible();
-    await page.screenshot({ path: `${SCREENSHOT_DIR}/06-error-servidor.png`, fullPage: true });
+    await screenshot(page, 'Error del servidor');
   });
 });

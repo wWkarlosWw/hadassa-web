@@ -37,6 +37,10 @@ test-results/
 tests/screenshots/
 playwright-report/
 
+### Allure ###
+allure-results/
+allure-report/
+
 ### Vitest ###
 html/
 .vitest/
