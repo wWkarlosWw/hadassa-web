@@ -32,7 +32,14 @@ dist/
 coverage/
 .nyc_output/
 
-### React ###
+### Playwright ###
+test-results/
+tests/screenshots/
+playwright-report/
+
+### Vitest ###
+html/
+.vitest/
 build/
 dist-ssr/
 *.local
