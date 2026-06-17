@@ -22,15 +22,47 @@ pipeline {
                 sh 'npx playwright install chromium'
             }
         }
-        stage('Ejecutar tests E2E') {
+        stage('Tests unitarios (Vitest)') {
+            steps {
+                sh 'npm run test:unit'
+            }
+        }
+        stage('Ejecutar tests E2E (Playwright)') {
             steps {
                 sh 'npm run test:e2e'
+            }
+        }
+        stage('Ejecutar tests BDD (Cucumber)') {
+            steps {
+                sh 'npm run test:e2e:bd'
             }
         }
         stage('Archivar capturas') {
             steps {
                 archiveArtifacts artifacts: 'tests/screenshots/*.png',
                     allowEmptyArchive: true
+            }
+        }
+        stage('Publicar reportes HTML') {
+            steps {
+                publishHTML([
+                    reportDir: 'test-results',
+                    reportFiles: 'vitest-report.html',
+                    reportName: 'Reporte Unit Tests (Vitest)',
+                    keepAll: true
+                ])
+                publishHTML([
+                    reportDir: 'test-results',
+                    reportFiles: 'cucumber-report.html',
+                    reportName: 'Reporte BDD (Cucumber)',
+                    keepAll: true
+                ])
+                publishHTML([
+                    reportDir: 'playwright-report',
+                    reportFiles: 'index.html',
+                    reportName: 'Reporte E2E (Playwright)',
+                    keepAll: true
+                ])
             }
         }
         stage('Generar reporte Allure') {
