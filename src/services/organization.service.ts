@@ -21,6 +21,7 @@ export type UpdateOrgData = Partial<Omit<CreateOrgData, 'password' | 'name' | 'e
 
 export const organizationService = {
   getAll: () => api.get<Organization[]>('/organization'),
+  getAllPublic: () => api.getPublic<Organization[]>('/organization'),
   getById: (id: string) => api.get<Organization>(`/organization/${id}`),
   create: (data: CreateOrgData) =>
     api.post<Organization>('/organization', data),

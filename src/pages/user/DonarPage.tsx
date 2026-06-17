@@ -13,6 +13,7 @@ import {
 import { organizationService } from "@/services/organization.service";
 import { eventService } from "@/services/event.service";
 import { useAuth } from "@/context";
+import { useNavigate } from "react-router-dom";
 import { DonationModal } from "./DonationModal";
 import { getOrgColors, getOrgImages } from "@/shared/constants/categoryColors";
 import type { Organization, Event } from "@/types/models";
@@ -28,7 +29,8 @@ const CATEGORIES = [
 ];
 
 export function DonarPage() {
-  const { refreshUser } = useAuth();
+  const { refreshUser, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const [organizations, setOrganizations] = useState<Organization[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,18 +43,34 @@ export function DonarPage() {
   const [category, setCategory] = useState("Todas");
   const autoplayRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  const handleDonate = (org: Organization) => {
+    if (isAuthenticated) {
+      setSelectedOrg(org);
+    } else {
+      navigate("/login?redirect=/donar");
+    }
+  };
+
   useEffect(() => {
-    Promise.all([
-      organizationService.getAll(),
-      eventService.getAll(),
-    ])
+    const fetchData = isAuthenticated
+      ? Promise.all([organizationService.getAll(), eventService.getAll()])
+      : Promise.all([organizationService.getAllPublic(), eventService.getAllPublic()]);
+
+    fetchData
       .then(([orgs, evts]) => {
         setOrganizations(orgs);
         setEvents(evts);
       })
-      .catch(() => setError("Error al cargar datos"))
+      .catch((err) => {
+        const msg = err instanceof Error ? err.message : "";
+        if (msg.includes("401") || msg.includes("Unauthorized")) {
+          setError("Inicia sesión para ver las fundaciones disponibles");
+        } else {
+          setError("Error al cargar datos");
+        }
+      })
       .finally(() => setLoading(false));
-  }, []);
+  }, [isAuthenticated]);
 
   const stopAutoplay = useCallback(() => {
     if (autoplayRef.current) {
@@ -167,7 +185,7 @@ export function DonarPage() {
               items={carouselItems}
               activeIndex={activeCarousel}
               onGoTo={goTo}
-              onDonate={(org) => setSelectedOrg(org)}
+              onDonate={handleDonate}
               getProgress={getProgress}
               formatCurrency={formatCurrency}
             />
@@ -219,7 +237,7 @@ export function DonarPage() {
                   <FoundationCard
                     key={foundation.id}
                     foundation={foundation}
-                    onDonate={() => setSelectedOrg(foundation)}
+                    onDonate={() => handleDonate(foundation)}
                   />
                 ))}
               </div>

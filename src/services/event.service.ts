@@ -3,6 +3,7 @@ import type { Event, EventParticipation } from '@/types/models'
 
 export const eventService = {
   getAll: () => api.get<Event[]>('/event'),
+  getAllPublic: () => api.getPublic<Event[]>('/event'),
   getById: (id: string) => api.get<Event>(`/event/${id}`),
   getByOrganization: (orgId: string) => api.get<Event[]>(`/event?organizationId=${orgId}`),
   create: (data: { name: string; description: string; date?: string; organizationId: string }) =>

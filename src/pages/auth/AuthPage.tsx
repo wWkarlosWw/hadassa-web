@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useAuth } from "@/context";
-import { Navigate } from "react-router-dom";
+import { Navigate, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import {
   AuthSidePanel,
@@ -21,10 +21,12 @@ const loginStats = [
 
 export function AuthPage() {
   const { login, register, isAuthenticated } = useAuth();
+  const [searchParams] = useSearchParams();
   const [view, setView] = useState<AuthView>("login");
+  const redirectTo = searchParams.get("redirect") || "/dashboard";
 
   if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to={redirectTo} replace />;
   }
 
   return (
@@ -75,6 +77,7 @@ export function AuthPage() {
           >
             <LoginForm
               onLogin={login}
+              redirectPath={redirectTo}
               onSwitchToRegister={() => setView("register")}
             />
           </motion.div>

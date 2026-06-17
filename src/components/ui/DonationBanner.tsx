@@ -52,7 +52,7 @@ export const DonationBanner = () => {
           <h3 className="text-3xl font-bold mb-4">¿Listo para hacer la diferencia?</h3>
           <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">Cada contribución, por pequeña que sea, tiene un impacto significativo en la vida de los niños y familias que servimos. Únete a nosotros hoy.</p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <button className="px-8 py-4 bg-white text-[var(--primary)] rounded-[var(--radius)] hover:bg-gray-100 transition-all shadow-lg font-semibold">Donar Ahora</button>
+            <a href="/donar" className="px-8 py-4 bg-white text-[var(--primary)] rounded-[var(--radius)] hover:bg-gray-100 transition-all shadow-lg font-semibold inline-block">Donar Ahora</a>
             <button className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-[var(--radius)] hover:bg-white/10 transition-all font-semibold">Contáctanos</button>
           </div>
         </div>

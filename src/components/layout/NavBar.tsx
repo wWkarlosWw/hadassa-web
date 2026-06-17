@@ -1,11 +1,15 @@
 // src/components/layout/Navbar.tsx
 import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, User } from "lucide-react";
 import logoHadassa from "../../assets/hadassa/Hadassa_logo.png";
 
 export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isHome = location.pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -14,19 +18,37 @@ export const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { href: "#inicio", label: "Inicio" },
-    { href: "#nosotros", label: "Nosotros" },
-    { href: "#mision", label: "Misión" },
-    { href: "#proyectos", label: "Proyectos" },
+    { hash: "inicio", label: "Inicio" },
+    { hash: "nosotros", label: "Nosotros" },
+    { hash: "mision", label: "Misión" },
+    { hash: "proyectos", label: "Proyectos" },
   ];
+
+  const handleNavClick = (hash: string) => {
+    if (isHome) {
+      const el = document.getElementById(hash);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      navigate(`/#${hash}`);
+    }
+    setMobileOpen(false);
+  };
+
+  const handleLogoClick = () => {
+    if (isHome) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      navigate("/");
+    }
+  };
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 ${scrolled ? "bg-[var(--bg-white)] shadow-[var(--shadow-md)] py-3" : "bg-transparent py-5"}`}
+      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 ${isHome && !scrolled ? "bg-transparent py-5" : "bg-[var(--bg-white)] shadow-[var(--shadow-md)] py-3"}`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          <a href="#inicio" className="flex items-center gap-3 group">
+          <button onClick={handleLogoClick} className="flex items-center gap-3 group">
             <div className="w-20 h-20 rounded-full flex items-center justify-center ">
               <img src={logoHadassa} alt="Logo Hadassa" />
             </div>
@@ -38,21 +60,21 @@ export const Navbar = () => {
                 Transformando vidas
               </p>
             </div>
-          </a>
+          </button>
 
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
+              <button
+                key={link.hash}
+                onClick={() => handleNavClick(link.hash)}
                 className="text-[var(--text-main)] hover:text-[var(--primary)] transition-colors duration-300 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-[var(--primary)] hover:after:w-full after:transition-all after:duration-300"
               >
                 {link.label}
-              </a>
+              </button>
             ))}
-            <button className="px-6 py-2.5 bg-[var(--primary)] text-white rounded-[var(--radius)] hover:bg-[var(--primary-dark)] transition-all shadow-[var(--shadow-primary)] hover:shadow-[var(--shadow-lg)]">
+            <a href="/donar" className="px-6 py-2.5 bg-[var(--primary)] text-white rounded-[var(--radius)] hover:bg-[var(--primary-dark)] transition-all shadow-[var(--shadow-primary)] hover:shadow-[var(--shadow-lg)]">
               Donar Ahora
-            </button>
+            </a>
           </div>
 
           <div className="flex items-center gap-4">
@@ -78,14 +100,13 @@ export const Navbar = () => {
         <div className="md:hidden bg-[var(--bg-white)] shadow-[var(--shadow-lg)] border-t border-[var(--border-color)]">
           <ul className="py-4 px-6 space-y-4">
             {navLinks.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
+              <li key={link.hash}>
+                <button
+                  onClick={() => handleNavClick(link.hash)}
                   className="block text-[var(--text-main)] font-medium py-2 hover:text-[var(--primary)] transition-colors"
-                  onClick={() => setMobileOpen(false)}
                 >
                   {link.label}
-                </a>
+                </button>
               </li>
             ))}
             <li>
@@ -99,8 +120,8 @@ export const Navbar = () => {
             </li>
             <li>
               <a
-                href="#donar"
-                className="block bg-[var(--primary)] text-white text-center px-5 py-3 rounded-[var(--radius)] mt-2"
+                href="/donar"
+                className="block w-full bg-[var(--primary)] text-white text-center px-5 py-3 rounded-[var(--radius)] mt-2"
                 onClick={() => setMobileOpen(false)}
               >
                 Donar Ahora

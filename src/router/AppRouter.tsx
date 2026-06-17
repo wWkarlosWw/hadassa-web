@@ -5,6 +5,8 @@ import { AuthPage } from "@/pages/auth/AuthPage";
 import { Dashboard } from "@/pages/Dashboard";
 import { UserLayout } from "@/components/layout/UserLayout";
 import { DonarPage } from "@/pages/user/DonarPage";
+import { Navbar } from "@/components/layout/NavBar";
+import { Footer } from "@/components/layout/Footer";
 import { DescuentosPage } from "@/pages/user/DescuentosPage";
 import { ActividadesPage } from "@/pages/user/ActividadesPage";
 import { ValidateDonationsPage } from "@/pages/supervisor/ValidateDonationsPage";
@@ -42,6 +44,15 @@ export function AppRouter() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<PublicRoute><AuthPage /></PublicRoute>} />
+        <Route path="/donar" element={
+          <div className="min-h-screen flex flex-col bg-[var(--bg-cream)]">
+            <Navbar />
+            <main className="grow pt-32 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+              <DonarPage />
+            </main>
+            <Footer />
+          </div>
+        } />
         <Route path="/dashboard" element={<ProtectedRoute><UserLayout /></ProtectedRoute>}>
           <Route index element={<Dashboard />} />
           <Route path="donar" element={<DonarPage />} />

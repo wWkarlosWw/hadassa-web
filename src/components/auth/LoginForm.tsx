@@ -7,10 +7,11 @@ import { AuthButton } from "./AuthButton";
 
 interface LoginFormProps {
   onLogin: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  redirectPath?: string;
   onSwitchToRegister: () => void;
 }
 
-export const LoginForm = ({ onLogin, onSwitchToRegister }: LoginFormProps) => {
+export const LoginForm = ({ onLogin, redirectPath, onSwitchToRegister }: LoginFormProps) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -38,7 +39,7 @@ export const LoginForm = ({ onLogin, onSwitchToRegister }: LoginFormProps) => {
       const result = await onLogin(email, password);
       setIsLoading(false);
       if (result.success) {
-        navigate("/dashboard");
+        navigate(redirectPath || "/dashboard");
       } else {
         setServerError(result.error || "Error al iniciar sesión");
       }
