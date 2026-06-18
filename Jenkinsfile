@@ -17,6 +17,23 @@ pipeline {
                 sh 'npm ci'
             }
         }
+        stage('Instalar dependencias backend') {
+            steps {
+                sh 'cd ../hadasa-back && npm ci'
+            }
+        }
+        stage('Iniciar backend') {
+            steps {
+                sh 'cd ../hadasa-back && npm run start:dev > /tmp/backend.log 2>&1 &'
+                sh 'sleep 8'
+            }
+        }
+        stage('Iniciar frontend') {
+            steps {
+                sh 'npm run dev > /tmp/frontend.log 2>&1 &'
+                sh 'sleep 5'
+            }
+        }
         stage('Tests unitarios (Vitest)') {
             steps {
                 sh 'npm run test:unit'
@@ -50,6 +67,12 @@ pipeline {
                 allure includeProperties: false,
                     results: [[path: 'allure-results']]
             }
+        }
+    }
+    post {
+        always {
+            sh 'pkill -f "nest start" || true'
+            sh 'pkill -f "vite" || true'
         }
     }
 }
