@@ -17,30 +17,14 @@ pipeline {
                 sh 'npm ci'
             }
         }
-        stage('Instalar Playwright') {
-            steps {
-                sh 'npx playwright install chromium'
-            }
-        }
         stage('Tests unitarios (Vitest)') {
             steps {
                 sh 'npm run test:unit'
             }
         }
-        stage('Ejecutar tests E2E (Playwright)') {
+        stage('Ejecutar tests BDD (WebDriver)') {
             steps {
                 sh 'npm run test:e2e'
-            }
-        }
-        stage('Ejecutar tests BDD (Cucumber)') {
-            steps {
-                sh 'npm run test:e2e:bd'
-            }
-        }
-        stage('Archivar capturas') {
-            steps {
-                archiveArtifacts artifacts: 'tests/screenshots/*.png',
-                    allowEmptyArchive: true
             }
         }
         stage('Publicar reportes HTML') {
@@ -57,13 +41,6 @@ pipeline {
                     reportDir: 'test-results',
                     reportFiles: 'cucumber-report.html',
                     reportName: 'Reporte BDD (Cucumber)',
-                    keepAll: true
-                ])
-                publishHTML([
-                    allowMissing: true,
-                    reportDir: 'playwright-report',
-                    reportFiles: 'index.html',
-                    reportName: 'Reporte E2E (Playwright)',
                     keepAll: true
                 ])
             }

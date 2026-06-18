@@ -50,15 +50,13 @@ Feature: Registro de usuario
     Then veo el mensaje "Debes aceptar los términos y condiciones"
 
   Scenario: Registro exitoso
-    Given la API de registro responde exitosamente
-    When completo todos los campos con datos válidos
+    When completo el registro con datos nuevos válidos
     And acepto los términos y condiciones
     And intento registrarme
     Then soy redirigido al dashboard
 
   Scenario: Correo electrónico ya registrado
-    Given la API de registro responde con error 409
-    When completo todos los campos con datos válidos
+    When completo el registro con un correo existente
     And acepto los términos y condiciones
     And intento registrarme
-    Then veo un mensaje de error del servidor
+    Then veo el mensaje "El usuario ya existe"

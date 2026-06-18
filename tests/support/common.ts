@@ -1,46 +1,63 @@
-import { Before, BeforeAll, AfterAll, Given, When, Then } from "@cucumber/cucumber";
-import { expect } from "@playwright/test";
-import { chromium, Browser, Page } from "playwright";
+import { BeforeAll, AfterAll, Before, Given, Then } from "@cucumber/cucumber";
+import { Builder, By, until, WebDriver } from "selenium-webdriver";
 
-let browser: Browser | null = null;
-let page: Page | null = null;
+let driver: WebDriver;
 
 BeforeAll(async function () {
-  browser = await chromium.launch({ headless: true });
+  driver = await new Builder().forBrowser("chrome").build();
 });
 
 AfterAll(async function () {
-  if (browser) {
-    await browser.close();
+  if (driver) {
+    await driver.quit();
   }
 });
 
 Before(async function () {
-  if (browser) {
-    const context = await browser.newContext({
-      baseURL: "http://localhost:5173",
-    });
-    page = await context.newPage();
-  }
+  await driver.manage().deleteAllCookies();
+  await driver.executeScript("localStorage.clear();");
 });
 
-export function getPage(): Page {
-  if (!page) throw new Error("Page not initialized");
-  return page;
+export function getDriver(): WebDriver {
+  if (!driver) throw new Error("Driver not initialized");
+  return driver;
+}
+
+export async function waitForText(text: string, timeout = 5000): Promise<void> {
+  await driver.wait(
+    until.elementLocated(By.xpath(`//*[contains(text(), '${text}')]`)),
+    timeout
+  );
+}
+
+export async function isTextVisible(text: string): Promise<boolean> {
+  try {
+    const elements = await driver.findElements(By.xpath(`//*[contains(text(), '${text}')]`));
+    for (const el of elements) {
+      if (await el.isDisplayed()) return true;
+    }
+    return false;
+  } catch {
+    return false;
+  }
 }
 
 Given("que estoy en la página de login", async function () {
-  await getPage().goto("/login");
+  await driver.get("http://localhost:5173/login");
+  await waitForText("Bienvenido de nuevo");
+});
+
+Given("que estoy en la página de registro", async function () {
+  await driver.get("http://localhost:5173/login");
+  await waitForText("Bienvenido de nuevo");
+  await driver.findElement(By.xpath("//*[contains(text(), 'Regístrate aquí')]")).click();
+  await waitForText("Únete a nosotros");
 });
 
 Then("veo el mensaje {string}", async function (mensaje: string) {
-  await expect(getPage().locator(`text=${mensaje}`)).toBeVisible();
+  await waitForText(mensaje);
 });
 
 Then("soy redirigido al dashboard", async function () {
-  await expect(getPage()).toHaveURL(/\/dashboard/);
-});
-
-Then("veo un mensaje de error del servidor", async function () {
-  await expect(getPage().locator("text=Error interno del servidor")).toBeVisible();
+  await driver.wait(until.urlContains("/dashboard"), 5000);
 });

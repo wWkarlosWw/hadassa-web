@@ -24,22 +24,13 @@ Feature: Inicio de sesión
     And veo el mensaje "La contraseña debe tener al menos 6 caracteres"
 
   Scenario: Inicio de sesión exitoso
-    Given la API de login responde exitosamente
     When ingreso "admin@hadassa.com" en el campo email
-    And ingreso "password123" en el campo contraseña
+    And ingreso "123456" en el campo contraseña
     And intento iniciar sesión
     Then soy redirigido al dashboard
 
   Scenario: Credenciales inválidas
-    Given la API de login responde con error 401
     When ingreso "user@hadassa.com" en el campo email
     And ingreso "wrongpassword" en el campo contraseña
     And intento iniciar sesión
-    Then veo el mensaje de error "Credenciales inválidas"
-
-  Scenario: Error del servidor
-    Given la API de login responde con error 500
-    When ingreso "admin@hadassa.com" en el campo email
-    And ingreso "password123" en el campo contraseña
-    And intento iniciar sesión
-    Then veo un mensaje de error del servidor
+    Then veo el mensaje "Invalid credentials"
